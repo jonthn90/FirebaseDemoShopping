@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "256198077727",
+    "firebase_url": "https://fir-demoshopping.firebaseio.com",
+    "project_id": "fir-demoshopping",
+    "storage_bucket": "fir-demoshopping.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:256198077727:android:b76879e26870a497",
+        "android_client_info": {
+          "package_name": "com.johnniesnow.firebasedemoshopping.live"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "256198077727-2l3cdes0l8kvsmdjhv80ajsh4e7j2lqa.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.johnniesnow.firebasedemoshopping.live",
+            "certificate_hash": "0900817f4bb1acd0d1e9b74476600b9291e6c3c7"
+          }
+        },
+        {
+          "client_id": "256198077727-b64ov5t3v38gqdllnod77t4u3fd84tc3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDeKlJemqtC2yhZryxxkDZacGFT5fjaIXQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "256198077727-b64ov5t3v38gqdllnod77t4u3fd84tc3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
