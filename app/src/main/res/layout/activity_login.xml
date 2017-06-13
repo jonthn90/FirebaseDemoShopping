@@ -13,7 +13,7 @@
         android:layout_marginBottom="13dp"/>
 
     <EditText
-        android:id="@+id/activity_main_userEmail"
+        android:id="@+id/activity_login_userEmail"
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:textSize="15sp"
@@ -27,7 +27,7 @@
         android:drawableStart="@mipmap/ic_email"/>
 
     <EditText
-        android:id="@+id/activity_main_userPassword"
+        android:id="@+id/activity_login_userPassword"
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:textSize="15sp"

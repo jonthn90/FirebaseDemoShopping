@@ -84,4 +84,44 @@ public class LiveAccountServices extends BaseLiveService {
 
         bus.post(response);
     }
+
+    @Subscribe
+    public void LogInUser(final AccountServices.LogUserInRequest request){
+        AccountServices.LogUserInResponse response = new AccountServices.LogUserInResponse();
+
+        if(request.userEmail.isEmpty()){
+            response.setPropertyErrors("email", "Please put in your email.");
+        }
+
+        if(request.userPassword.isEmpty()){
+            response.setPropertyErrors("password", "Please put in your password.");
+        }
+
+        if(response.didSuceed()){
+
+            request.progressDialog.show();
+
+            auth.signInWithEmailAndPassword(request.userEmail, request.userPassword)
+                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+
+                            if(!task.isSuccessful()) {
+                                request.progressDialog.dismiss();
+                                Toast.makeText(application.getApplicationContext(), task.getException().getMessage(),Toast.LENGTH_LONG).show();
+                            } else {
+
+                                Firebase userLocation = new  Firebase(Utils.FIRE_BASE_USER_REFERENCE + Utils.encodeEmail(request.userEmail));
+
+                                userLocation.child("hasLoggedInWithPassword").setValue(true);
+                                request.progressDialog.dismiss();
+                                Toast.makeText(application.getApplicationContext(), "User has logged in", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+        }
+
+        bus.post(response);
+    }
+
 }

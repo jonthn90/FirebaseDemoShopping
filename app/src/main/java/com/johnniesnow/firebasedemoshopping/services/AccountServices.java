@@ -25,6 +25,20 @@ public class AccountServices {
         }
     }
 
-    public static class RegisterUserResponse extends ServiceResponse{
+    public static class RegisterUserResponse extends ServiceResponse{}
+
+    public static class LogUserInRequest{
+        public String userEmail;
+        public String userPassword;
+        public ProgressDialog progressDialog;
+
+
+        public LogUserInRequest(String userEmail, String userPassword, ProgressDialog progressDialog) {
+            this.userEmail = userEmail;
+            this.userPassword = userPassword;
+            this.progressDialog = progressDialog;
+        }
     }
+
+    public static class LogUserInResponse extends ServiceResponse{}
 }
