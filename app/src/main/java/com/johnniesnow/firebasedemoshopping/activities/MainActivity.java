@@ -1,8 +1,9 @@
-package com.johnniesnow.firebasedemoshopping;
+package com.johnniesnow.firebasedemoshopping.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.johnniesnow.firebasedemoshopping.R;
 import com.johnniesnow.firebasedemoshopping.activities.BaseActivity;
 
 public class MainActivity extends BaseActivity {

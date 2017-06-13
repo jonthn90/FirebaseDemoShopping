@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:id="@+id/activity_login_linear_layout"
-              android:gravity="center">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:id="@+id/activiy_register_linear_layout">
 
     <ImageView
         android:layout_width="100dp"
@@ -13,7 +14,18 @@
         android:layout_marginBottom="13dp"/>
 
     <EditText
-        android:id="@+id/activity_main_userEmail"
+        android:id="@+id/activity_register_userName"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:textSize="15sp"
+        android:textColor="#fff"
+        android:textColorHint="#fff"
+        android:padding="14dp"
+        android:background="@color/colorPrimary"
+        android:hint="Please enter your name"/>
+
+    <EditText
+        android:id="@+id/activity_register_userEmail"
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:textSize="15sp"
@@ -21,41 +33,27 @@
         android:textColorHint="#fff"
         android:padding="14dp"
         android:inputType="textEmailAddress"
+        android:layout_marginTop="15dp"
         android:background="@color/colorPrimary"
         android:hint="Email"
         android:drawableLeft="@mipmap/ic_email"
         android:drawableStart="@mipmap/ic_email"/>
 
-    <EditText
-        android:id="@+id/activity_main_userPassword"
-        android:layout_width="300dp"
-        android:layout_height="50dp"
-        android:textSize="15sp"
-        android:textColor="#fff"
-        android:textColorHint="#fff"
-        android:padding="14dp"
-        android:inputType="textPassword"
-        android:layout_marginTop="15dp"
-        android:background="@color/colorPrimary"
-        android:hint="Password"
-        android:drawableLeft="@mipmap/ic_lock"
-        android:drawableStart="@mipmap/ic_lock"/>
-
     <Button
-        android:id="@+id/activity_login_loginButton"
+        android:id="@+id/activity_register_registerButton"
         android:layout_width="225dp"
         android:layout_height="40dp"
-        android:text="Sign in"
+        android:text="Sign up"
         android:textAllCaps="false"
         android:layout_marginTop="15dp"
         android:textStyle="bold"
         android:background="@drawable/button_background"/>
 
     <Button
-        android:id="@+id/activity_login_RegisterButton"
-        android:layout_width="225dp"
+        android:id="@+id/activity_register_loginButton"
+        android:layout_width="240dp"
         android:layout_height="40dp"
-        android:text="No account? Sign up"
+        android:text="Already register? Log in"
         android:textAllCaps="false"
         android:layout_marginTop="5dp"
         android:textStyle="bold"
