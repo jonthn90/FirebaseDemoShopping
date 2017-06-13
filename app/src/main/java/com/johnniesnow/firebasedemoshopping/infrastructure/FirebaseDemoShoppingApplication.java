@@ -3,6 +3,7 @@ package com.johnniesnow.firebasedemoshopping.infrastructure;
 import android.app.Application;
 
 import com.firebase.client.Firebase;
+import com.johnniesnow.firebasedemoshopping.Module;
 import com.squareup.otto.Bus;
 
 /**
@@ -21,6 +22,7 @@ public class FirebaseDemoShoppingApplication extends Application {
     public void onCreate() {
         super.onCreate();
         Firebase.setAndroidContext(this);
+        Module.Register(this);
     }
 
     public Bus getBus() {
