@@ -2,6 +2,7 @@ package com.johnniesnow.firebasedemoshopping.services;
 
 import android.app.ProgressDialog;
 
+import com.facebook.AccessToken;
 import com.johnniesnow.firebasedemoshopping.infrastructure.ServiceResponse;
 
 /**
@@ -41,4 +42,18 @@ public class AccountServices {
     }
 
     public static class LogUserInResponse extends ServiceResponse{}
+
+    public static class LogUserFacebookRequest{
+        public AccessToken accessToken;
+        public String userName;
+        public String userEmail;
+        public ProgressDialog progressDialog;
+
+        public LogUserFacebookRequest(AccessToken accessToken, String userName, String userEmail, ProgressDialog progressDialog) {
+            this.accessToken = accessToken;
+            this.userName = userName;
+            this.userEmail = userEmail;
+            this.progressDialog = progressDialog;
+        }
+    }
 }
