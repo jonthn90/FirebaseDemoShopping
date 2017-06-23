@@ -14,8 +14,8 @@
         android:theme="@style/AppTheme"
         android:name=".infrastructure.FirebaseDemoShoppingApplication">
 
-        <activity android:name=".activities.LoginActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
+        <activity android:name=".activities.SplashScreenActivity"
+            android:theme="@style/SplashScreenStyle"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -23,6 +23,13 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <activity android:name=".activities.LoginActivity"
+                  android:theme="@style/Theme.AppCompat.NoActionBar"
+                  android:screenOrientation="portrait"/>
+
+        <activity android:name=".activities.MainActivity"
+                  android:screenOrientation="portrait"/>
 
         <activity android:name=".activities.RegisterActivity"
                   android:theme="@style/Theme.AppCompat.NoActionBar"

@@ -1,6 +1,9 @@
 package com.johnniesnow.firebasedemoshopping;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
@@ -14,6 +17,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
+import com.johnniesnow.firebasedemoshopping.activities.LoginActivity;
+import com.johnniesnow.firebasedemoshopping.activities.MainActivity;
+import com.johnniesnow.firebasedemoshopping.entities.User;
 import com.johnniesnow.firebasedemoshopping.infrastructure.FirebaseDemoShoppingApplication;
 import com.johnniesnow.firebasedemoshopping.infrastructure.Utils;
 import com.johnniesnow.firebasedemoshopping.services.AccountServices;
@@ -80,6 +86,12 @@ public class LiveAccountServices extends BaseLiveService {
                                                     Toast.makeText(application.getApplicationContext(), "Please check your email", Toast.LENGTH_LONG).show();
 
                                                     request.progressDialog.dismiss();
+
+                                                    Intent intent = new Intent(application.getApplicationContext(), LoginActivity.class);
+
+                                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                    application.startActivity(intent);
+
                                                 }
                                             }
                                         });
@@ -117,11 +129,38 @@ public class LiveAccountServices extends BaseLiveService {
                                 Toast.makeText(application.getApplicationContext(), task.getException().getMessage(),Toast.LENGTH_LONG).show();
                             } else {
 
-                                Firebase userLocation = new  Firebase(Utils.FIRE_BASE_USER_REFERENCE + Utils.encodeEmail(request.userEmail));
+                                final Firebase userLocation = new  Firebase(Utils.FIRE_BASE_USER_REFERENCE + Utils.encodeEmail(request.userEmail));
 
-                                userLocation.child("hasLoggedInWithPassword").setValue(true);
-                                request.progressDialog.dismiss();
-                                Toast.makeText(application.getApplicationContext(), "User has logged in", Toast.LENGTH_LONG).show();
+                                userLocation.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        User user = dataSnapshot.getValue(User.class);
+
+                                        if (user != null){
+
+                                            userLocation.child("hasLoggedInWithPassword").setValue(true);
+                                            SharedPreferences sharedPreferences = request.sharedPreferences;
+                                            sharedPreferences.edit().putString(Utils.EMAIL, Utils.encodeEmail(user.getEmail())).apply();
+                                            sharedPreferences.edit().putString(Utils.USERNAME, user.getName()).apply();
+
+                                            request.progressDialog.dismiss();
+
+                                            Intent intent = new Intent(application.getApplicationContext(), MainActivity.class);
+
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                            application.startActivity(intent);
+                                        } else{
+                                            request.progressDialog.dismiss();
+                                            Toast.makeText(application.getApplicationContext(), "Fail to connect", Toast.LENGTH_LONG).show();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(FirebaseError firebaseError) {
+                                        request.progressDialog.dismiss();
+                                        Toast.makeText(application.getApplicationContext(), firebaseError.getMessage(), Toast.LENGTH_LONG).show();
+                                    }
+                                });
                             }
                         }
                     });
@@ -171,8 +210,16 @@ public class LiveAccountServices extends BaseLiveService {
                                 }
                             });
 
+                            SharedPreferences sharedPreferences = request.sharedPreferences;
+                            sharedPreferences.edit().putString(Utils.EMAIL, Utils.encodeEmail(request.userEmail)).apply();
+                            sharedPreferences.edit().putString(Utils.USERNAME, request.userName).apply();
+
                             request.progressDialog.dismiss();
-                            Toast.makeText(application.getApplicationContext(), "User has logged in", Toast.LENGTH_LONG).show();
+
+                            Intent intent = new Intent(application.getApplicationContext(), MainActivity.class);
+
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            application.startActivity(intent);
                         }
                     }
                 });

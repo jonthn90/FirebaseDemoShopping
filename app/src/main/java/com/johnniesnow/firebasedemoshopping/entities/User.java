@@ -9,16 +9,16 @@ import java.util.HashMap;
 public class User {
     private String email;
     private String name;
-    private HashMap<String, Object> dateJoined;
+    private HashMap<String, Object> timeJoined;
     private boolean hasLoggedInWithPassword;
 
     public User() {
     }
 
-    public User(String email, String name, HashMap<String, Object> dateJoined, boolean hasLoggedInWithPassword) {
+    public User(String email, String name, HashMap<String, Object> timeJoined, boolean hasLoggedInWithPassword) {
         this.email = email;
         this.name = name;
-        this.dateJoined = dateJoined;
+        this.timeJoined = timeJoined;
         this.hasLoggedInWithPassword = hasLoggedInWithPassword;
     }
 
@@ -30,8 +30,8 @@ public class User {
         return name;
     }
 
-    public HashMap<String, Object> getDateJoined() {
-        return dateJoined;
+    public HashMap<String, Object> getTimeJoined() {
+        return timeJoined;
     }
 
     public boolean isHasLoggedInWithPassword() {
