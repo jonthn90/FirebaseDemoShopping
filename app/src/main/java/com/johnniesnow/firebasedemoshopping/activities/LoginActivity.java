@@ -78,6 +78,8 @@ public class LoginActivity extends BaseActivity{
         progressDialog.setCancelable(false);
 
         sharedPreferences = getSharedPreferences(Utils.MY_PREFERENCE, MODE_PRIVATE);
+
+        printKeyHash();
     }
 
     @OnClick(R.id.activity_login_RegisterButton)

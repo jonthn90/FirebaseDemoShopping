@@ -8,6 +8,11 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
+import com.facebook.login.LoginManager;
 import com.johnniesnow.firebasedemoshopping.R;
 import com.johnniesnow.firebasedemoshopping.activities.BaseActivity;
 import com.johnniesnow.firebasedemoshopping.infrastructure.Utils;
@@ -51,6 +56,8 @@ public class MainActivity extends BaseActivity {
                 editor.putString(Utils.EMAIL, null).apply();
                 editor.putString(Utils.USERNAME, null).apply();
 
+                disconnectFromFacebook();
+
                 auth.signOut();
 
                 startActivity(new Intent(getApplicationContext(), LoginActivity.class));
@@ -63,5 +70,28 @@ public class MainActivity extends BaseActivity {
 
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    public void disconnectFromFacebook() {
+
+        if (AccessToken.getCurrentAccessToken() == null) {
+            return; // already logged out
+        }
+
+        LoginManager.getInstance().logOut();
+
+        /*
+        new GraphRequest(AccessToken.getCurrentAccessToken(), "/me/permissions/", null, HttpMethod.DELETE, new GraphRequest
+                .Callback() {
+            @Override
+            public void onCompleted(GraphResponse graphResponse) {
+
+                LoginManager.getInstance().logOut();
+
+            }
+        }).executeAsync();
+
+        */
     }
 }

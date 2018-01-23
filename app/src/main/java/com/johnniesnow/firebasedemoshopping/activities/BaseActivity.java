@@ -106,7 +106,7 @@ public class BaseActivity extends AppCompatActivity{
         }
     }
 
-    private void printKeyHash() {
+    public void printKeyHash() {
         try {
             PackageInfo info = getPackageManager().getPackageInfo(
                     getPackageName(), PackageManager.GET_SIGNATURES);
