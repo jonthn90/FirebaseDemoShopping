@@ -6,17 +6,17 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ServerValue;
-import com.firebase.client.ValueEventListener;
-import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
+import com.google.firebase.database.ValueEventListener;
 import com.johnniesnow.firebasedemoshopping.activities.LoginActivity;
 import com.johnniesnow.firebasedemoshopping.activities.MainActivity;
 import com.johnniesnow.firebasedemoshopping.entities.User;
@@ -73,7 +73,8 @@ public class LiveAccountServices extends BaseLiveService {
                                                     request.progressDialog.dismiss();
                                                     Toast.makeText(application.getApplicationContext(), task.getException().getMessage(),Toast.LENGTH_LONG).show();
                                                 } else {
-                                                    Firebase reference = new Firebase(Utils.FIRE_BASE_USER_REFERENCE + Utils.encodeEmail(request.userEmail));
+                                                    DatabaseReference reference = FirebaseDatabase.getInstance()
+                                                            .getReferenceFromUrl(Utils.FIRE_BASE_USER_REFERENCE + Utils.encodeEmail(request.userEmail));
 
                                                     HashMap<String, Object> timeJoined = new HashMap<>();
                                                     timeJoined.put("dateJoined", ServerValue.TIMESTAMP);
@@ -129,7 +130,8 @@ public class LiveAccountServices extends BaseLiveService {
                                 Toast.makeText(application.getApplicationContext(), task.getException().getMessage(),Toast.LENGTH_LONG).show();
                             } else {
 
-                                final Firebase userLocation = new  Firebase(Utils.FIRE_BASE_USER_REFERENCE + Utils.encodeEmail(request.userEmail));
+                                final DatabaseReference userLocation = FirebaseDatabase.getInstance()
+                                        .getReferenceFromUrl(Utils.FIRE_BASE_USER_REFERENCE + Utils.encodeEmail(request.userEmail));
 
                                 userLocation.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
@@ -156,7 +158,7 @@ public class LiveAccountServices extends BaseLiveService {
                                     }
 
                                     @Override
-                                    public void onCancelled(FirebaseError firebaseError) {
+                                    public void onCancelled(DatabaseError firebaseError) {
                                         request.progressDialog.dismiss();
                                         Toast.makeText(application.getApplicationContext(), firebaseError.getMessage(), Toast.LENGTH_LONG).show();
                                     }
@@ -184,7 +186,8 @@ public class LiveAccountServices extends BaseLiveService {
                             request.progressDialog.dismiss();
                             Toast.makeText(application.getApplicationContext(), task.getException().getMessage(),Toast.LENGTH_LONG).show();
                         } else {
-                            final Firebase reference = new Firebase(Utils.FIRE_BASE_USER_REFERENCE + Utils.encodeEmail(request.userEmail));
+                            final DatabaseReference reference = FirebaseDatabase.getInstance()
+                                    .getReferenceFromUrl(Utils.FIRE_BASE_USER_REFERENCE + Utils.encodeEmail(request.userEmail));
 
                             reference.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
@@ -202,7 +205,7 @@ public class LiveAccountServices extends BaseLiveService {
                                 }
 
                                 @Override
-                                public void onCancelled(FirebaseError firebaseError) {
+                                public void onCancelled(DatabaseError firebaseError) {
 
                                     request.progressDialog.dismiss();
                                     Toast.makeText(application.getApplicationContext(), firebaseError.getMessage(), Toast.LENGTH_LONG).show();

@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "256198077727-q1p24m27p0fjkkdhn5ort21jls5j9u33.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.johnniesnow.firebasedemoshopping.live",
+            "certificate_hash": "deb5c8add3f1a2e0a5b8fa5fc336df28afab353b"
+          }
+        },
+        {
           "client_id": "256198077727-2l3cdes0l8kvsmdjhv80ajsh4e7j2lqa.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

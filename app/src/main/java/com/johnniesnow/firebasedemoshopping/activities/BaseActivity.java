@@ -12,7 +12,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
 
-import com.firebase.client.Firebase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.johnniesnow.firebasedemoshopping.infrastructure.FirebaseDemoShoppingApplication;

@@ -2,7 +2,9 @@ package com.johnniesnow.firebasedemoshopping.infrastructure;
 
 import android.app.Application;
 
-import com.firebase.client.Firebase;
+
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.FirebaseDatabase;
 import com.johnniesnow.firebasedemoshopping.Module;
 import com.squareup.otto.Bus;
 
@@ -21,7 +23,12 @@ public class FirebaseDemoShoppingApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Firebase.setAndroidContext(this);
+
+        //Newer version of Firebase
+        if(!FirebaseApp.getApps(this).isEmpty()) {
+            FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        }
+
         Module.Register(this);
     }
 

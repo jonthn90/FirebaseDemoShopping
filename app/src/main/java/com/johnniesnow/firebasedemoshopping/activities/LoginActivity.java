@@ -17,8 +17,6 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.firebase.client.Firebase;
-import com.google.firebase.auth.FirebaseAuth;
 import com.johnniesnow.firebasedemoshopping.R;
 import com.johnniesnow.firebasedemoshopping.R2;
 import com.johnniesnow.firebasedemoshopping.infrastructure.Utils;

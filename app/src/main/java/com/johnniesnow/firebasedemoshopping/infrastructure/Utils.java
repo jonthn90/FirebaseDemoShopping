@@ -9,6 +9,7 @@ public class Utils {
 
     public static final String FIRE_BASE_USER_REFERENCE = FIRE_BASE_URL + "users/";
 
+    public static final String FIRE_BASE_USER_SHOPPING_LIST_REFERENCE = FIRE_BASE_URL + "userShoppingLists/";
 
     public static final String MY_PREFERENCE = "MY_PREFERENCE";
     public static final String EMAIL = "EMAIL";
@@ -19,4 +20,7 @@ public class Utils {
         return userEmail.replace(".",",");
     }
 
+    public static String decodeEmail(String userEmail){
+        return userEmail.replace(",",".");
+    }
 }

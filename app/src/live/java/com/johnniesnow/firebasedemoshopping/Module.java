@@ -8,7 +8,8 @@ import com.johnniesnow.firebasedemoshopping.infrastructure.FirebaseDemoShoppingA
 
 public class Module {
 
-    public static  void Register(FirebaseDemoShoppingApplication application){
+    public static void Register(FirebaseDemoShoppingApplication application){
         new LiveAccountServices(application);
+        new LiveShoppingListService(application);
     }
 }
