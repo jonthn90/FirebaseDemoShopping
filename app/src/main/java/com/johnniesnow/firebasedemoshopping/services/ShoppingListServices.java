@@ -29,4 +29,14 @@ public class ShoppingListServices {
     }
 
 
+    public static class DeleteShoppingListRequest{
+        public String ownerEmail;
+        public String shoppingListId;
+
+        public DeleteShoppingListRequest(String ownerEmail, String shoppingListId) {
+            this.ownerEmail = ownerEmail;
+            this.shoppingListId = shoppingListId;
+        }
+    }
+
 }

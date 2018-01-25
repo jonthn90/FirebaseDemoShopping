@@ -31,6 +31,7 @@ import com.google.firebase.database.Query;
 import com.johnniesnow.firebasedemoshopping.R;
 import com.johnniesnow.firebasedemoshopping.activities.BaseActivity;
 import com.johnniesnow.firebasedemoshopping.dialog.AddListDialogFragment;
+import com.johnniesnow.firebasedemoshopping.dialog.DeleteListDialogFragment;
 import com.johnniesnow.firebasedemoshopping.entities.ShoppingList;
 import com.johnniesnow.firebasedemoshopping.infrastructure.Utils;
 import com.johnniesnow.firebasedemoshopping.views.ShoppingListViews.ShoppingListviewHolder;
@@ -110,6 +111,22 @@ public class MainActivity extends BaseActivity {
                     }
                 });
 
+
+                shoppingListviewHolder.layout.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        if (userEmail.equals(Utils.encodeEmail(shoppingListFinal.getOwnerEmail()))){
+                            DialogFragment dialogFragment = DeleteListDialogFragment.newInstance(shoppingListFinal.getId(),true);
+                            dialogFragment.show(getFragmentManager(),DeleteListDialogFragment.class.getSimpleName());
+                            return true;
+                        } else{
+                            Toast.makeText(getApplicationContext(),"Only the owner can delete this list",Toast.LENGTH_LONG).show();
+                            return true;
+                        }
+
+                    }
+                });
+
             }
         };
 
@@ -153,7 +170,7 @@ public class MainActivity extends BaseActivity {
 
         return super.onOptionsItemSelected(item);
     }
-    
+
 
     @Override
     protected void onStart() {
