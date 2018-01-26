@@ -1,4 +1,20 @@
 <resources>
     <string name="app_name">Firebase Demo Shopping</string>
     <string name="facebook_app_id">1334067886642175</string>
+
+    <string name="pref_sort_list_name">pref_sort_list_name</string>
+
+    <string name="pref_sort_list_dialog_title">Order By</string>
+
+
+    <string name="pref_entry_publishTime">Publish Time</string>
+    <string name="pref_entry_listName">List Name</string>
+    <string name="pref_entry_ownerEmail">Owner</string>
+
+
+    <string name="pref_entry_publishTime_value">oderByPushKey</string>
+    <string name="pref_entry_listName_value">listName</string>
+    <string name="pref_entry_ownerEmail_value">ownerEmail</string>
+
+    <string name="bought_by">Bought by: %1$s</string>
 </resources>

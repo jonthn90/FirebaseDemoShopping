@@ -4,6 +4,7 @@ import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -71,13 +72,30 @@ public class MainActivity extends BaseActivity {
 
         getSupportActionBar().setTitle(toolBarName);
 
-        DatabaseReference ref = FirebaseDatabase.getInstance()
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        DatabaseReference shoppingListReference = FirebaseDatabase.getInstance()
                 .getReferenceFromUrl(Utils.FIRE_BASE_USER_SHOPPING_LIST_REFERENCE + userEmail);
 
 
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplication());
+        String sortOrder = sharedPreferences.getString(Utils.LIST_ODER_PREFERENCE,Utils.ORDER_BY_KEY);
+        Query sortQuery;
+
+        if(sortOrder.equals(Utils.ORDER_BY_KEY)){
+            sortQuery = shoppingListReference.orderByKey();
+        } else{
+            sortQuery = shoppingListReference.orderByChild(sortOrder);
+        }
 
         FirebaseRecyclerOptions<ShoppingList> options = new FirebaseRecyclerOptions.Builder<ShoppingList>()
-                .setQuery(ref, ShoppingList.class)
+                .setQuery(sortQuery, ShoppingList.class)
                 .build();
 
         adapter = new FirebaseRecyclerAdapter<ShoppingList, ShoppingListviewHolder>(options) {
@@ -132,6 +150,9 @@ public class MainActivity extends BaseActivity {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
+
+        adapter.startListening();
+        
     }
 
     @Override
@@ -164,6 +185,10 @@ public class MainActivity extends BaseActivity {
                 finish();
 
                 return true;
+
+            case R.id.action_sort:
+                startActivity(new Intent(getApplicationContext(),SettingActivity.class));
+                return true;
         }
 
 
@@ -175,7 +200,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        adapter.startListening();
+
     }
 
     @Override

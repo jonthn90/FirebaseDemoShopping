@@ -7,4 +7,13 @@
         android:orderInCategory="100"
         android:title="Logout"
         app:showAsAction = "never"></item>
+
+    <item
+        android:id="@+id/action_sort"
+        android:title="Sort"
+        android:icon="@mipmap/ic_sort"
+        app:showAsAction = "ifRoom"
+        android:orderInCategory="100"
+        />
+
 </menu>
