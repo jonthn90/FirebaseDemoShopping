@@ -36,8 +36,10 @@
                   android:screenOrientation="portrait"/>
 
         <activity android:name=".activities.SettingActivity"
-            android:screenOrientation="portrait"
-            />
+            android:screenOrientation="portrait" />
+
+        <activity android:name=".activities.ListDetailsActivity"
+            android:screenOrientation="portrait" />
 
         <meta-data android:name="com.facebook.sdk.ApplicationId" tools:replace="android:value" android:value="@string/facebook_app_id"/>
 

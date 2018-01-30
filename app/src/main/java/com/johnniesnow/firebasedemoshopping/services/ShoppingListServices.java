@@ -1,5 +1,8 @@
 package com.johnniesnow.firebasedemoshopping.services;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
+import com.johnniesnow.firebasedemoshopping.entities.ShoppingList;
 import com.johnniesnow.firebasedemoshopping.infrastructure.ServiceResponse;
 
 /**
@@ -24,7 +27,7 @@ public class ShoppingListServices {
         }
     }
 
-    public static class AddShoppingListResponse extends ServiceResponse{
+    public static class AddShoppingListResponse extends ServiceResponse {
 
     }
 
@@ -38,5 +41,35 @@ public class ShoppingListServices {
             this.shoppingListId = shoppingListId;
         }
     }
+
+    public static class ChangeListNameRequest{
+        public String newShoppingListName;
+        public String shoppingListId;
+        public String shoppingListOwnerEmail;
+
+        public ChangeListNameRequest(String newShoppingListName, String shoppingListId, String shoppingListOwnerEmail) {
+            this.newShoppingListName = newShoppingListName;
+            this.shoppingListId = shoppingListId;
+            this.shoppingListOwnerEmail = shoppingListOwnerEmail;
+        }
+    }
+
+    public static class ChangeListNameResponse extends ServiceResponse {
+
+    }
+
+    public static class GetCurrentShoppingListRequest{
+        public DatabaseReference reference;
+
+        public GetCurrentShoppingListRequest(DatabaseReference reference) {
+            this.reference = reference;
+        }
+    }
+
+    public static class GetCurrentShoppingListResponse{
+        public ShoppingList shoppingList;
+        public ValueEventListener valueEventListener;
+    }
+
 
 }

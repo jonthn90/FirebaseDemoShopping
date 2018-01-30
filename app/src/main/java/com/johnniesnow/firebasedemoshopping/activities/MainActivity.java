@@ -116,7 +116,7 @@ public class MainActivity extends BaseActivity {
             }
 
             @Override
-            protected void onBindViewHolder(@NonNull ShoppingListviewHolder shoppingListviewHolder, int i, @NonNull ShoppingList shoppingList) {
+            protected void onBindViewHolder(@NonNull ShoppingListviewHolder shoppingListviewHolder, int i, @NonNull final ShoppingList shoppingList) {
 
                 shoppingListviewHolder.populate(shoppingList);
 
@@ -125,7 +125,11 @@ public class MainActivity extends BaseActivity {
                 shoppingListviewHolder.layout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Toast.makeText(getApplicationContext(),shoppingListFinal.getListName() + " was clicked" ,Toast.LENGTH_LONG).show();
+                        ArrayList<String> shoppingListInfo = new ArrayList<>();
+                        shoppingListInfo.add(shoppingListFinal.getId());
+                        shoppingListInfo.add(shoppingListFinal.getListName());
+                        shoppingListInfo.add(shoppingListFinal.getOwnerEmail());
+                        startActivity(ListDetailsActivity.newInstance(getApplicationContext(), shoppingListInfo));
                     }
                 });
 
@@ -152,7 +156,7 @@ public class MainActivity extends BaseActivity {
         recyclerView.setAdapter(adapter);
 
         adapter.startListening();
-        
+
     }
 
     @Override
