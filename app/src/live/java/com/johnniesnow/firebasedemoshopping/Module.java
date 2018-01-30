@@ -11,5 +11,6 @@ public class Module {
     public static void Register(FirebaseDemoShoppingApplication application){
         new LiveAccountServices(application);
         new LiveShoppingListService(application);
+        new LiveItemService(application);
     }
 }

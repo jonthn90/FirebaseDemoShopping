@@ -20,6 +20,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.johnniesnow.firebasedemoshopping.R;
+import com.johnniesnow.firebasedemoshopping.dialog.AddItemDialogFragment;
 import com.johnniesnow.firebasedemoshopping.dialog.ChangeListNameDialogFragment;
 import com.johnniesnow.firebasedemoshopping.dialog.DeleteListDialogFragment;
 import com.johnniesnow.firebasedemoshopping.entities.ShoppingList;
@@ -193,16 +194,11 @@ public class ListDetailsActivity extends BaseActivity {
     }
 
 
-    /*
-
     @OnClick(R.id.activity_list_details_FAB)
     public void setFloatingActionButton(){
         DialogFragment dialogFragment = AddItemDialogFragment.newInstance(mShoppingId);
-        dialogFragment.show(getFragmentManager(),AddItemDialogFragment.class.getSimpleName());
+        dialogFragment.show(getFragmentManager(), AddItemDialogFragment.class.getSimpleName());
     }
-
-    */
-
 
     @Override
     protected void onDestroy() {
