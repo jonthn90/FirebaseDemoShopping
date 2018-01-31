@@ -41,6 +41,12 @@
         <activity android:name=".activities.ListDetailsActivity"
             android:screenOrientation="portrait" />
 
+        <activity android:name=".activities.AddFriendActivity"
+            android:screenOrientation="portrait" />
+
+        <activity android:name=".activities.ShareListActivity"
+            android:screenOrientation="portrait" />
+
         <meta-data android:name="com.facebook.sdk.ApplicationId" tools:replace="android:value" android:value="@string/facebook_app_id"/>
 
     </application>

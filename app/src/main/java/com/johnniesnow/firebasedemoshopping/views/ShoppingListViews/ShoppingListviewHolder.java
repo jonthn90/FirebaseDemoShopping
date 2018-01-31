@@ -35,8 +35,6 @@ public class ShoppingListviewHolder extends RecyclerView.ViewHolder {
         super(itemView);
 
         ButterKnife.bind(this, itemView);
-
-
     }
 
     public void populate(ShoppingList shoppingList){

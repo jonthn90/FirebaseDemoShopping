@@ -49,13 +49,16 @@ public class LiveShoppingListService extends BaseLiveService {
             ShoppingList shoppingList = new ShoppingList(reference.getKey(),request.shoppingListName,
                     Utils.decodeEmail(request.ownerEmail), request.ownerName, timestampedCreated);
 
+            reference.setValue(shoppingList);
 
+            /*
             reference.child("id").setValue(shoppingList.getId());
             reference.child("listName").setValue(shoppingList.getListName());
             reference.child("ownerEmail").setValue(shoppingList.getOwnerEmail());
             reference.child("ownerName").setValue(shoppingList.getOwnerName());
             reference.child("dateCreated").setValue(shoppingList.getDateCreated());
             reference.child("dateLastChanged").setValue(shoppingList.getDateLastChanged());
+            */
 
 
             Toast.makeText(application.getApplicationContext(), "List created", Toast.LENGTH_LONG).show();
@@ -71,13 +74,12 @@ public class LiveShoppingListService extends BaseLiveService {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReferenceFromUrl(Utils.FIRE_BASE_SHOPPING_LIST_REFERENCE + request.ownerEmail + "/" + request.shoppingListId);
         reference.removeValue();
 
-        /*
         DatabaseReference itemReference = FirebaseDatabase.getInstance().getReferenceFromUrl(Utils.FIRE_BASE_LIST_ITEMS_REFERENCE + request.shoppingListId);
-        DatabaseReference sharedWithReference = FirebaseDatabase.getInstance().getReferenceFromUrl(Utils.FIRE_BASE_SHARED_WITH_REFERENCE + request.shoppingListId);
-
         itemReference.removeValue();
+
+        DatabaseReference sharedWithReference = FirebaseDatabase.getInstance().getReferenceFromUrl(Utils.FIRE_BASE_SHARED_WITH_REFERENCE + request.shoppingListId);
         sharedWithReference.removeValue();
-        */
+
     }
 
     @Subscribe

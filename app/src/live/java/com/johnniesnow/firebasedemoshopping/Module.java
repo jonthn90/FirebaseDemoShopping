@@ -12,5 +12,6 @@ public class Module {
         new LiveAccountServices(application);
         new LiveShoppingListService(application);
         new LiveItemService(application);
+        new LiveUsersService(application);
     }
 }

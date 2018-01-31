@@ -4,28 +4,39 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.johnniesnow.firebasedemoshopping.R;
 import com.johnniesnow.firebasedemoshopping.dialog.AddItemDialogFragment;
+import com.johnniesnow.firebasedemoshopping.dialog.ChangeItemNameDialogFragment;
 import com.johnniesnow.firebasedemoshopping.dialog.ChangeListNameDialogFragment;
+import com.johnniesnow.firebasedemoshopping.dialog.DeleteItemDialogFragment;
 import com.johnniesnow.firebasedemoshopping.dialog.DeleteListDialogFragment;
+import com.johnniesnow.firebasedemoshopping.entities.Item;
 import com.johnniesnow.firebasedemoshopping.entities.ShoppingList;
 import com.johnniesnow.firebasedemoshopping.infrastructure.Utils;
+import com.johnniesnow.firebasedemoshopping.services.ItemService;
 import com.johnniesnow.firebasedemoshopping.services.ShoppingListServices;
+import com.johnniesnow.firebasedemoshopping.views.ItemListViews.ListItemViewHolder;
+import com.johnniesnow.firebasedemoshopping.views.ShoppingListViews.ShoppingListviewHolder;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -77,25 +88,49 @@ public class ListDetailsActivity extends BaseActivity {
         mShoppingOwner = getIntent().getStringArrayListExtra(SHOPPING_LIST_DETAILS).get(2);
 
         mShoppingListReference =  FirebaseDatabase.getInstance().getReferenceFromUrl(Utils.FIRE_BASE_SHOPPING_LIST_REFERENCE + userEmail + "/" + mShoppingId);
-
-
         bus.post(new ShoppingListServices.GetCurrentShoppingListRequest(mShoppingListReference));
-        /*
 
-
+        getSupportActionBar().setTitle(mShoppingName);
 
         DatabaseReference itemsReference = FirebaseDatabase.getInstance()
                 .getReferenceFromUrl(Utils.FIRE_BASE_LIST_ITEMS_REFERENCE + mShoppingId);
 
-        adapter = new FirebaseRecyclerAdapter<Item,ListItemViewHolder>(Item.class,
-                R.layout.list_shopping_item,
-                ListItemViewHolder.class,
-                itemsReference) {
+        Query sortQuery = itemsReference.orderByKey();
 
+        FirebaseRecyclerOptions<Item> options = new FirebaseRecyclerOptions.Builder<Item>()
+                .setQuery(sortQuery, Item.class)
+                .build();
+
+
+        adapter = new FirebaseRecyclerAdapter<Item, ListItemViewHolder>(options) {
 
             @Override
-            protected void populateViewHolder(ListItemViewHolder listItemViewHolder, final Item item, int i) {
-                listItemViewHolder.populate(item,getApplicationContext(),userEmail);
+            public ListItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_shopping_item, parent, false);
+
+                return new ListItemViewHolder(view);
+            }
+
+            @Override
+            protected void onBindViewHolder(@NonNull ListItemViewHolder listItemViewHolder, int i, @NonNull final Item item) {
+
+                listItemViewHolder.populate(item, getApplicationContext(), userEmail);
+
+                final ListItemViewHolder itemViewHolderFinal = listItemViewHolder;
+
+                listItemViewHolder.itemName.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (!item.isBought()){
+                            bus.post(new ItemService.ChangeBoughtItemStatusRequest(item, userEmail, mShoppingId));
+                        } else if(Utils.encodeEmail(item.getBoughtBy()).equals(userEmail)){
+                            bus.post(new ItemService.ChangeBoughtItemStatusRequest(item, userEmail, mShoppingId));
+                        } else {
+                            Toast.makeText(getApplicationContext(),"Only the person who bought can unbuy this item",Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
 
                 listItemViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -110,7 +145,6 @@ public class ListDetailsActivity extends BaseActivity {
                     }
                 });
 
-
                 listItemViewHolder.itemName.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
@@ -120,39 +154,24 @@ public class ListDetailsActivity extends BaseActivity {
                             extraInfo.add(mShoppingId);
                             extraInfo.add(userEmail);
                             extraInfo.add(item.getItemName());
+
                             DialogFragment dialogFragment = ChangeItemNameDialogFragment.newInstance(extraInfo);
                             dialogFragment.show(getFragmentManager(),ChangeItemNameDialogFragment.class.getSimpleName());
                             return true;
                         } else{
-                            Toast.makeText(getApplicationContext(),"Only the owner of the list or item can rename it",Toast.LENGTH_LONG)
-                                    .show();
+                            Toast.makeText(getApplicationContext(),"Only the owner of the list or item can rename it",Toast.LENGTH_LONG).show();
                             return true;
                         }
-                    }
-                });
-
-                listItemViewHolder.itemName.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (!item.isBought()){
-                            bus.post(new ItemService.ChangeBoughtItemStatusRequest(item,userEmail,mShoppingId));
-                        } else if(Utils.encodeEmail(item.getBoughtBy()).equals(userEmail)){
-                            bus.post(new ItemService.ChangeBoughtItemStatusRequest(item,userEmail,mShoppingId));
-                        } else {
-                            Toast.makeText(getApplicationContext(),"Only the person who bought can un buy this item",Toast.LENGTH_LONG)
-                                    .show();
-                        }
-
                     }
                 });
 
             }
         };
-        */
 
-        getSupportActionBar().setTitle(mShoppingName);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
+
+        adapter.startListening();
     }
 
     @Override
@@ -181,14 +200,10 @@ public class ListDetailsActivity extends BaseActivity {
                 dialogFragment1.show(getFragmentManager(),DeleteListDialogFragment.class.getSimpleName());
                 return true;
 
-                /*
             case R.id.action_share_list:
                 startActivity(ShareListActivity.newIntent(getApplicationContext(),mShoppingId));
 
                 return true;
-
-                break;
-                */
         }
         return true;
     }

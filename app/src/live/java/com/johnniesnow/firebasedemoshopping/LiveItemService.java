@@ -58,6 +58,7 @@ public class LiveItemService extends BaseLiveService {
     public void DeleteItem(ItemService.DeleteItemRequest request){
         DatabaseReference itemReference = FirebaseDatabase.getInstance()
                 .getReferenceFromUrl(Utils.FIRE_BASE_LIST_ITEMS_REFERENCE + request.shoppingListId + "/" + request.itemId);
+
         DatabaseReference listReference = FirebaseDatabase.getInstance()
                 .getReferenceFromUrl(Utils.FIRE_BASE_SHOPPING_LIST_REFERENCE + request.userEmail + "/" + request.shoppingListId);
 
@@ -71,7 +72,9 @@ public class LiveItemService extends BaseLiveService {
 
     @Subscribe
     public void ChangeItemName(ItemService.ChangeItemNameRequest request){
+
         ItemService.ChangeItemNameResponse response = new ItemService.ChangeItemNameResponse();
+
         if (request.newItemName.isEmpty()){
             response.setPropertyErrors("itemName","Item must have a name.");
         }
@@ -85,17 +88,13 @@ public class LiveItemService extends BaseLiveService {
             Map newItemData = new HashMap();
             newItemData.put("itemName",request.newItemName);
 
-
             itemReference.updateChildren(newItemData);
-
 
             HashMap<String,Object> timeLastChanged = new HashMap<>();
             timeLastChanged.put("date", ServerValue.TIMESTAMP);
             Map newListData = new HashMap();
             newListData.put("dateLastChanged",timeLastChanged);
             listReference.updateChildren(newListData);
-
-
 
         }
 

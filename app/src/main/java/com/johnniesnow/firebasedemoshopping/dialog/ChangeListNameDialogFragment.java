@@ -12,7 +12,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.johnniesnow.firebasedemoshopping.R;
+import com.johnniesnow.firebasedemoshopping.entities.User;
+import com.johnniesnow.firebasedemoshopping.entities.UsersSharedWith;
 import com.johnniesnow.firebasedemoshopping.infrastructure.Utils;
+import com.johnniesnow.firebasedemoshopping.services.GetUsersService;
 import com.johnniesnow.firebasedemoshopping.services.ShoppingListServices;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
@@ -36,7 +39,7 @@ public class ChangeListNameDialogFragment extends BaseDialog implements View.OnC
 
 
     private ValueEventListener mShareWIthListener;
-    //private UsersSharedWith mSharedWith;
+    private UsersSharedWith mSharedWith;
     private DatabaseReference mShareWithReference;
 
 
@@ -54,7 +57,7 @@ public class ChangeListNameDialogFragment extends BaseDialog implements View.OnC
         super.onCreate(savedInstanceState);
         mShoppingListId = getArguments().getStringArrayList(SHOPPING_LIST_EXTRA_INFO).get(0);
         mShareWithReference = FirebaseDatabase.getInstance().getReferenceFromUrl(Utils.FIRE_BASE_SHARED_WITH_REFERENCE + mShoppingListId);
-        //bus.post(new GetUsersService.GetSharedWithRequest(mShareWithReference));
+        bus.post(new GetUsersService.GetSharedWithRequest(mShareWithReference));
     }
 
     @Override
@@ -85,8 +88,9 @@ public class ChangeListNameDialogFragment extends BaseDialog implements View.OnC
     @Override
     public void onClick(View v) {
 
-        bus.post(new ShoppingListServices.ChangeListNameRequest(newListName.getText().toString(), mShoppingListId, userEmail));
+        //bus.post(new ShoppingListServices.ChangeListNameRequest(newListName.getText().toString(), mShoppingListId, userEmail));
 
+        changeAllShoppingListsName(mSharedWith.getSharedWith(),bus,mShoppingListId,userEmail,newListName.getText().toString());
     }
 
     @Subscribe
@@ -97,11 +101,24 @@ public class ChangeListNameDialogFragment extends BaseDialog implements View.OnC
         dismiss();
     }
 
-    /*
-    @Override
-    public void onClick(View v) {
+    public static void changeAllShoppingListsName(HashMap<String,User> usersSharedWith, Bus bus, String shoppingListId, String ownerEmail, String newListName){
+        if (usersSharedWith !=null && !usersSharedWith.isEmpty()){
+            for(User user: usersSharedWith.values()){
+                if (usersSharedWith.containsKey(Utils.encodeEmail(user.getEmail()))) {
+                    DatabaseReference friendListsReference = FirebaseDatabase.getInstance().getReferenceFromUrl(Utils.FIRE_BASE_SHOPPING_LIST_REFERENCE +
+                                    Utils.encodeEmail(user.getEmail()) + "/" + shoppingListId);
 
-        changeAllShoppingListsName(mSharedWith.getSharedWith(),bus,mShoppingListId,userEmail,newListName.getText().toString());
+                    bus.post(new ShoppingListServices.ChangeListNameRequest(newListName,shoppingListId,Utils.encodeEmail(user.getEmail())));
+                    bus.post(new ShoppingListServices.UpdateShoppingListTimeStampRequest(friendListsReference));
+                }
+            }
+        }
+        bus.post(new ShoppingListServices.ChangeListNameRequest(newListName,shoppingListId,ownerEmail));
+        DatabaseReference ownerReference = FirebaseDatabase.getInstance().getReferenceFromUrl(Utils.FIRE_BASE_SHOPPING_LIST_REFERENCE + "/" +
+                ownerEmail + "/" +shoppingListId);
+
+        bus.post(new ShoppingListServices.UpdateShoppingListTimeStampRequest(ownerReference));
+
     }
 
     @Override
@@ -122,31 +139,6 @@ public class ChangeListNameDialogFragment extends BaseDialog implements View.OnC
             mSharedWith = new UsersSharedWith();
         }
     }
-
-
-    public static void changeAllShoppingListsName(HashMap<String,User> usersSharedWith, Bus bus
-            , String shoppingListId, String ownerEmail,String newListName){
-        if (usersSharedWith !=null && !usersSharedWith.isEmpty()){
-            for(User user: usersSharedWith.values()){
-                if (usersSharedWith.containsKey(Utils.encodeEmail(user.getEmail()))) {
-                    Firebase friendListsReference =
-                            new Firebase(Utils.FIRE_BASE_SHOPPING_LIST_REFERENCE +
-                                    Utils.encodeEmail(user.getEmail()) + "/" + shoppingListId);
-
-                    bus.post(new ShoppingListService.ChangeListNameRequest(newListName,shoppingListId,Utils.encodeEmail(user.getEmail())));
-                    bus.post(new ShoppingListService.UpdateShoppingListTimeStampRequest(friendListsReference));
-                }
-            }
-        }
-        bus.post(new ShoppingListService.ChangeListNameRequest(newListName,shoppingListId,ownerEmail));
-        Firebase ownerReference = new Firebase(Utils.FIRE_BASE_SHOPPING_LIST_REFERENCE + "/" +
-                ownerEmail + "/" +shoppingListId);
-
-        bus.post(new ShoppingListService.UpdateShoppingListTimeStampRequest(ownerReference));
-
-    }
-
-    */
 
 }
 
